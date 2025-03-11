@@ -24,10 +24,19 @@
 		"url": "https://github.com/dnlsandiego"
 	},
 	"keywords": [
-		"temporal"
+		"date",
+		"temporal",
+		"temporal-polyfill"
 	],
+	"peerDependencies": {
+		"temporal-polyfill": "^0.2.5"
+	},
+	"peerDependenciesMeta": {
+		"temporal-polyfill": {
+			"optional": false
+		}
+	},
 	"dependencies": {
-		"temporal-polyfill": "^0.2.5",
 		"tiny-invariant": "^1.3.3"
 	},
 	"devDependencies": {
