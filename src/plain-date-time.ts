@@ -1,9 +1,10 @@
 import { Temporal } from 'temporal-polyfill'
 import { toLocale } from './common.js'
-import { Duration, type DurationLike } from './duration.js'
+import { Duration } from './duration.js'
 import { PlainDate, type PlainDateLike } from './plain-date.js'
 import { PlainTime, type PlainTimeLike } from './plain-time.js'
 import { PlainYearMonth } from './plain-year-month.js'
+import { MethodParameters } from './type-utils.js'
 import { ZonedDateTime } from './zoned-date-time.js'
 
 export type PlainDateTimeLike =
@@ -12,15 +13,14 @@ export type PlainDateTimeLike =
 	| Temporal.PlainDateTimeLike
 
 export class PlainDateTime extends Temporal.PlainDateTime {
-	static now() {
-		return PlainDateTime.from(Temporal.Now.plainDateTimeISO())
+	static now(tzLike?: Temporal.TimeZoneLike): PlainDateTime {
+		return PlainDateTime.from(Temporal.Now.plainDateTimeISO(tzLike))
 	}
 
 	static from(
-		item: PlainDateTimeLike | string,
-		options?: Temporal.AssignmentOptions,
+		...args: Parameters<typeof Temporal.PlainDateTime.from>
 	): PlainDateTime {
-		const date = Temporal.PlainDateTime.from(item, options)
+		const date = Temporal.PlainDateTime.from(...args)
 		return new PlainDateTime(
 			date.year,
 			date.month,
@@ -75,67 +75,27 @@ export class PlainDateTime extends Temporal.PlainDateTime {
 	}
 
 	subtract(
-		durationLike: DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
+		...args: MethodParameters<Temporal.PlainDateTime, 'subtract'>
 	): PlainDateTime {
-		return PlainDateTime.from(super.subtract(durationLike, options))
+		return PlainDateTime.from(super.subtract(...args))
 	}
 
-	add(
-		durationLike: DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
-	): PlainDateTime {
-		return PlainDateTime.from(super.add(durationLike, options))
+	add(...args: MethodParameters<Temporal.PlainDateTime, 'add'>): PlainDateTime {
+		return PlainDateTime.from(super.add(...args))
 	}
 
-	since(
-		other: PlainDateTimeLike | string,
-		options?: Temporal.DifferenceOptions<
-			| 'year'
-			| 'month'
-			| 'week'
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
-	): Duration {
-		return Duration.from(super.since(other, options))
+	since(...args: MethodParameters<Temporal.PlainDateTime, 'since'>): Duration {
+		return Duration.from(super.since(...args))
 	}
 
-	until(
-		other: PlainDateTimeLike | string,
-		options?: Temporal.DifferenceOptions<
-			| 'year'
-			| 'month'
-			| 'week'
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
-	): Duration {
-		return Duration.from(super.until(other, options))
+	until(...args: MethodParameters<Temporal.PlainDateTime, 'until'>): Duration {
+		return Duration.from(super.until(...args))
 	}
 
 	round(
-		roundTo: Temporal.RoundTo<
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
+		...args: MethodParameters<Temporal.PlainDateTime, 'round'>
 	): PlainDateTime {
-		return PlainDateTime.from(super.round(roundTo))
+		return PlainDateTime.from(super.round(...args))
 	}
 
 	toPlainDate(): PlainDate {
@@ -147,10 +107,9 @@ export class PlainDateTime extends Temporal.PlainDateTime {
 	}
 
 	toZonedDateTime(
-		tzLike: Temporal.TimeZoneLike,
-		options?: Temporal.ToInstantOptions,
+		...args: MethodParameters<Temporal.PlainDateTime, 'toZonedDateTime'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.toZonedDateTime(tzLike, options))
+		return ZonedDateTime.from(super.toZonedDateTime(...args))
 	}
 
 	toPlainYearMonth(): PlainYearMonth {
@@ -178,9 +137,8 @@ export class PlainDateTime extends Temporal.PlainDateTime {
 	}
 
 	with(
-		dateTimeLike: Temporal.PlainDateTimeLike,
-		options?: Temporal.AssignmentOptions,
+		...args: MethodParameters<Temporal.PlainDateTime, 'with'>
 	): PlainDateTime {
-		return PlainDateTime.from(super.with(dateTimeLike, options))
+		return PlainDateTime.from(super.with(...args))
 	}
 }

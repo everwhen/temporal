@@ -30,18 +30,7 @@ export class Sequence<T extends Point> implements Iterable<T> {
 		this.end = end
 		this.step = Duration.from(step)
 		this.total = this.start.until(this.end)
-
-		/** TODO: fix PlainTime bounds checking */
-		// if (start.compare(end) > 0) {
-		// 	throw new Error('Sequence end must not be before start')
-		// }
 	}
-
-	// validate(): boolean{
-	// 	let accumulated = Duration.from('PT0S')
-	// 	accumulated.add(this.step)
-	// 	return false
-	// }
 
 	static from<T extends Point>(bounds: SequenceDef<T>): Sequence<T> {
 		const stepDefault: DurationLike = {}

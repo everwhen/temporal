@@ -11,10 +11,8 @@ export type DurationSumOptions = {
 }
 
 export class Duration extends Temporal.Duration {
-	static from(
-		item: Temporal.Duration | Temporal.DurationLike | string,
-	): Duration {
-		const d = Temporal.Duration.from(item)
+	static from(...args: Parameters<typeof Temporal.Duration.from>): Duration {
+		const d = Temporal.Duration.from(...args)
 		return new Duration(
 			d.years,
 			d.months,
@@ -36,7 +34,7 @@ export class Duration extends Temporal.Duration {
 		return Temporal.Duration.compare(this, other, options)
 	}
 
-	isNegated() {
+	get isNegated(): boolean {
 		return this.sign === -1
 	}
 

@@ -5,6 +5,7 @@ import { PlainDateTime } from './plain-date-time.js'
 import { PlainDate } from './plain-date.js'
 import { PlainTime } from './plain-time.js'
 import { PlainYearMonth } from './plain-year-month.js'
+import { MethodParameters } from './type-utils.js'
 
 export type ZonedDateTimeLike =
 	| ZonedDateTime
@@ -12,15 +13,14 @@ export type ZonedDateTimeLike =
 	| Temporal.ZonedDateTimeLike
 
 export class ZonedDateTime extends Temporal.ZonedDateTime {
-	static now() {
-		return ZonedDateTime.from(Temporal.Now.zonedDateTimeISO())
+	static now(tzLike?: Temporal.TimeZoneLike): ZonedDateTime {
+		return ZonedDateTime.from(Temporal.Now.zonedDateTimeISO(tzLike))
 	}
 
 	static from(
-		item: ZonedDateTimeLike | string,
-		options?: Temporal.ZonedDateTimeAssignmentOptions,
+		...args: Parameters<typeof Temporal.ZonedDateTime.from>
 	): ZonedDateTime {
-		const date = Temporal.ZonedDateTime.from(item, options)
+		const date = Temporal.ZonedDateTime.from(...args)
 		return new ZonedDateTime(
 			date.epochNanoseconds,
 			date.timeZoneId,
@@ -30,6 +30,14 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 
 	compare(other: ZonedDateTimeLike | string): Temporal.ComparisonResult {
 		return ZonedDateTime.compare(this, other)
+	}
+
+	isBefore(other: ZonedDateTimeLike): boolean {
+		return ZonedDateTime.compare(this, other) === -1
+	}
+
+	isAfter(other: ZonedDateTimeLike): boolean {
+		return this.compare(other) === 1
 	}
 
 	startOfDay(): ZonedDateTime {
@@ -65,54 +73,20 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 		)
 	}
 
-	nextMonth(): ZonedDateTime {
-		return ZonedDateTime.from(this.add({ months: 1 }).with({ day: 1 }))
-	}
-
-	previousMonth(): ZonedDateTime {
-		return ZonedDateTime.from(this.subtract({ months: 1 }).with({ day: 1 }))
-	}
-
-	nextWeek(): ZonedDateTime {
-		return ZonedDateTime.from(this.startOfWeek().add({ weeks: 1 }))
-	}
-
-	nextDay(): ZonedDateTime {
-		return this.add({ days: 1 })
-	}
-
-	add(
-		durationLike: Temporal.Duration | Temporal.DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
-	): ZonedDateTime {
-		return ZonedDateTime.from(super.add(durationLike, options))
+	add(...args: MethodParameters<Temporal.ZonedDateTime, 'add'>): ZonedDateTime {
+		return ZonedDateTime.from(super.add(...args))
 	}
 
 	subtract(
-		durationLike: Temporal.Duration | Temporal.DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
+		...args: MethodParameters<Temporal.ZonedDateTime, 'subtract'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.subtract(durationLike, options))
-	}
-
-	isBefore(other: ZonedDateTimeLike): boolean {
-		return ZonedDateTime.compare(this, other) === -1
-	}
-
-	isAfter(other: ZonedDateTimeLike): boolean {
-		return this.compare(other) === 1
-	}
-
-	isToday(): boolean {
-		const now = Temporal.Now.plainDateISO()
-		return now.equals(this)
+		return ZonedDateTime.from(super.subtract(...args))
 	}
 
 	with(
-		zonedDateTimeLike: Temporal.ZonedDateTimeLike,
-		options?: Temporal.ZonedDateTimeAssignmentOptions,
+		...args: MethodParameters<Temporal.ZonedDateTime, 'with'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.with(zonedDateTimeLike, options))
+		return ZonedDateTime.from(super.with(...args))
 	}
 
 	withCalendar(calendar: Temporal.CalendarLike): ZonedDateTime {
@@ -120,15 +94,15 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 	}
 
 	withPlainTime(
-		timeLike?: PlainTime | Temporal.PlainTime | Temporal.PlainTimeLike | string,
+		...args: MethodParameters<Temporal.ZonedDateTime, 'withPlainTime'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.withPlainTime(timeLike))
+		return ZonedDateTime.from(super.withPlainTime(...args))
 	}
 
 	withPlainDate(
-		dateLike: PlainDate | Temporal.PlainDate | Temporal.PlainDateLike | string,
+		...args: MethodParameters<Temporal.ZonedDateTime, 'withPlainDate'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.withPlainDate(dateLike))
+		return ZonedDateTime.from(super.withPlainDate(...args))
 	}
 
 	withTimeZone(timeZone: Temporal.TimeZoneLike): ZonedDateTime {
@@ -136,53 +110,17 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 	}
 
 	round(
-		roundTo: Temporal.RoundTo<
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
+		...args: MethodParameters<Temporal.ZonedDateTime, 'round'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.round(roundTo))
+		return ZonedDateTime.from(super.round(...args))
 	}
 
-	since(
-		other: ZonedDateTimeLike,
-		options?: Temporal.DifferenceOptions<
-			| 'year'
-			| 'month'
-			| 'week'
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
-	): Duration {
-		return Duration.from(super.since(other, options))
+	since(...args: MethodParameters<Temporal.ZonedDateTime, 'since'>): Duration {
+		return Duration.from(super.since(...args))
 	}
 
-	until(
-		other: ZonedDateTimeLike,
-		options?: Temporal.DifferenceOptions<
-			| 'year'
-			| 'month'
-			| 'week'
-			| 'day'
-			| 'hour'
-			| 'minute'
-			| 'second'
-			| 'millisecond'
-			| 'microsecond'
-			| 'nanosecond'
-		>,
-	): Duration {
-		return Duration.from(super.until(other, options))
+	until(...args: MethodParameters<Temporal.ZonedDateTime, 'until'>): Duration {
+		return Duration.from(super.until(...args))
 	}
 
 	toPlainYearMonth(): PlainYearMonth {

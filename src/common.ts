@@ -1,19 +1,4 @@
 import { isObject, isString } from './is.js'
-import type { PlainDateTime } from './plain-date-time.js'
-import { PlainDate } from './plain-date.js'
-import type { ZonedDateTime } from './zoned-date-time.js'
-
-export type CalendaDateLike = PlainDate | PlainDateTime | ZonedDateTime
-
-export function startOfWeek<T extends CalendaDateLike>(date: T): T {
-	return date.subtract({
-		days: (date.dayOfWeek + (date.daysInWeek - 1)) % date.daysInWeek,
-	}) as T
-}
-
-export function endOfWeek<T extends CalendaDateLike>(date: T): T {
-	return date.startOfWeek().add({ days: date.daysInWeek - 1 }) as T
-}
 
 export function toLocale(
 	localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,

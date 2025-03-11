@@ -2,6 +2,7 @@ import { Temporal } from 'temporal-polyfill'
 import { toLocale } from './common.js'
 import { Duration, type DurationLike } from './duration.js'
 import { PlainDate } from './plain-date.js'
+import { MethodParameters } from './type-utils.js'
 
 export type PlainYearMonthLike =
 	| PlainYearMonth
@@ -9,21 +10,20 @@ export type PlainYearMonthLike =
 	| Temporal.PlainYearMonthLike
 
 export class PlainYearMonth extends Temporal.PlainYearMonth {
+	static now(): PlainYearMonth {
+		return PlainYearMonth.from(PlainDate.now())
+	}
+
 	static from(
-		item: Temporal.PlainYearMonth | Temporal.PlainYearMonthLike | string,
-		options?: Temporal.AssignmentOptions,
+		...args: Parameters<typeof Temporal.PlainYearMonth.from>
 	): PlainYearMonth {
-		const month = Temporal.PlainYearMonth.from(item, options).getISOFields()
+		const month = Temporal.PlainYearMonth.from(...args).getISOFields()
 		return new PlainYearMonth(
 			month.isoYear,
 			month.isoMonth,
 			month.calendar,
 			month.isoDay,
 		)
-	}
-
-	static now(): PlainYearMonth {
-		return PlainYearMonth.from(PlainDate.now())
 	}
 
 	compare(other: PlainYearMonthLike | string): Temporal.ComparisonResult {
@@ -51,20 +51,18 @@ export class PlainYearMonth extends Temporal.PlainYearMonth {
 	}
 
 	add(
-		durationLike: DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
+		...args: MethodParameters<Temporal.PlainYearMonth, 'add'>
 	): PlainYearMonth {
-		return PlainYearMonth.from(super.add(durationLike, options))
+		return PlainYearMonth.from(super.add(...args))
 	}
 
 	subtract(
-		durationLike: DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
+		...args: MethodParameters<Temporal.PlainYearMonth, 'subtract'>
 	): PlainYearMonth {
-		return PlainYearMonth.from(super.subtract(durationLike, options))
+		return PlainYearMonth.from(super.subtract(...args))
 	}
 
-	contains(date: PlainYearMonthLike | Temporal.PlainDateLike): boolean {
+	contains(date: PlainYearMonthLike): boolean {
 		return (
 			PlainYearMonth.compare(this, date) <= 0 &&
 			PlainYearMonth.compare(this, date) >= 0
@@ -98,24 +96,15 @@ export class PlainYearMonth extends Temporal.PlainYearMonth {
 		return super.toLocaleString(locale, options)
 	}
 
-	with(
-		yearMonthLike: Temporal.PlainYearMonthLike,
-		options?: Temporal.AssignmentOptions,
-	) {
-		return PlainYearMonth.from(super.with(yearMonthLike, options))
+	with(...args: MethodParameters<Temporal.PlainYearMonth, 'with'>) {
+		return PlainYearMonth.from(super.with(...args))
 	}
 
-	until(
-		other: PlainYearMonthLike | string,
-		options?: Temporal.DifferenceOptions<'year' | 'month'>,
-	): Duration {
-		return Duration.from(super.until(other, options))
+	until(...args: MethodParameters<Temporal.PlainYearMonth, 'until'>): Duration {
+		return Duration.from(super.until(...args))
 	}
 
-	since(
-		other: PlainYearMonthLike | string,
-		options?: Temporal.DifferenceOptions<'year' | 'month'>,
-	): Duration {
-		return Duration.from(super.since(other, options))
+	since(...args: MethodParameters<Temporal.PlainYearMonth, 'since'>): Duration {
+		return Duration.from(super.since(...args))
 	}
 }

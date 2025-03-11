@@ -3,6 +3,7 @@ import { toLocale } from './common.js'
 import { Duration } from './duration.js'
 import { PlainDateTime } from './plain-date-time.js'
 import { PlainYearMonth } from './plain-year-month.js'
+import { MethodParameters } from './type-utils.js'
 import { ZonedDateTime } from './zoned-date-time.js'
 
 export type PlainDateLike =
@@ -11,8 +12,8 @@ export type PlainDateLike =
 	| Temporal.PlainDateLike
 
 export class PlainDate extends Temporal.PlainDate {
-	static now() {
-		return PlainDate.from(Temporal.Now.plainDateISO())
+	static now(tzLike?: Temporal.TimeZoneLike): PlainDate {
+		return PlainDate.from(Temporal.Now.plainDateISO(tzLike))
 	}
 
 	static from(...args: Parameters<typeof Temporal.PlainDate.from>): PlainDate {
@@ -66,29 +67,25 @@ export class PlainDate extends Temporal.PlainDate {
 		return this.startOfWeek().add({ days: this.daysInWeek - 1 })
 	}
 
-	with(dateLike: Temporal.PlainDateLike, options?: Temporal.AssignmentOptions) {
-		return PlainDate.from(super.with(dateLike, options))
+	with(...args: MethodParameters<Temporal.PlainDate, 'with'>): PlainDate {
+		return PlainDate.from(super.with(...args))
 	}
 
-	add(
-		durationLike: Temporal.Duration | Temporal.DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
-	) {
-		return PlainDate.from(super.add(durationLike, options))
+	add(...args: MethodParameters<Temporal.PlainDate, 'add'>): PlainDate {
+		return PlainDate.from(super.add(...args))
 	}
 
 	subtract(
-		durationLike: Temporal.Duration | Temporal.DurationLike | string,
-		options?: Temporal.ArithmeticOptions,
-	) {
-		return PlainDate.from(super.subtract(durationLike, options))
+		...args: MethodParameters<Temporal.PlainDate, 'subtract'>
+	): PlainDate {
+		return PlainDate.from(super.subtract(...args))
 	}
 
-	isToday() {
+	isToday(): boolean {
 		return PlainDate.now().equals(this)
 	}
 
-	toPlainYearMonth() {
+	toPlainYearMonth(): PlainYearMonth {
 		return PlainYearMonth.from(this)
 	}
 
@@ -101,38 +98,26 @@ export class PlainDate extends Temporal.PlainDate {
 	}
 
 	toZonedDateTime(
-		timeZoneAndTime:
-			| Temporal.TimeZoneProtocol
-			| string
-			| {
-					timeZone: Temporal.TimeZoneLike
-					plainTime?: Temporal.PlainTime | Temporal.PlainTimeLike | string
-			  },
+		...args: MethodParameters<Temporal.PlainDate, 'toZonedDateTime'>
 	): ZonedDateTime {
-		return ZonedDateTime.from(super.toZonedDateTime(timeZoneAndTime))
+		return ZonedDateTime.from(super.toZonedDateTime(...args))
 	}
 
 	toPlainDateTime(
-		temporalTime?: Temporal.PlainTime | Temporal.PlainTimeLike | string,
+		...args: MethodParameters<Temporal.PlainDate, 'toPlainDateTime'>
 	): PlainDateTime {
-		return PlainDateTime.from(super.toPlainDateTime(temporalTime))
+		return PlainDateTime.from(super.toPlainDateTime(...args))
 	}
 
 	withCalendar(calendar: Temporal.CalendarLike): PlainDate {
 		return PlainDate.from(super.withCalendar(calendar))
 	}
 
-	since(
-		other: Temporal.PlainDate | Temporal.PlainDateLike | string,
-		options?: Temporal.DifferenceOptions<'year' | 'month' | 'week' | 'day'>,
-	): Duration {
-		return Duration.from(super.since(other, options))
+	since(...args: MethodParameters<Temporal.PlainDate, 'since'>): Duration {
+		return Duration.from(super.since(...args))
 	}
 
-	until(
-		other: Temporal.PlainDate | Temporal.PlainDateLike | string,
-		options?: Temporal.DifferenceOptions<'year' | 'month' | 'week' | 'day'>,
-	): Duration {
-		return Duration.from(super.until(other, options))
+	until(...args: MethodParameters<Temporal.PlainDate, 'until'>): Duration {
+		return Duration.from(super.until(...args))
 	}
 }
