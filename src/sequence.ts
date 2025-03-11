@@ -45,11 +45,13 @@ export class Sequence<T extends Point> implements Iterable<T> {
 	*[Symbol.iterator](): Iterator<T> {
 		let current = this.start
 		let accumulated = Duration.from('PT0S')
+		const opts = { relativeTo: this.start }
+
 		yield current
 
 		while (current.compare(this.end) < 0) {
-			accumulated = accumulated.add(this.step)
-			if (accumulated.compare(this.total) > 0) {
+			accumulated = accumulated.add(this.step, opts)
+			if (accumulated.compare(this.total, opts) > 0) {
 				break
 			}
 
@@ -69,19 +71,20 @@ export class Sequence<T extends Point> implements Iterable<T> {
 			value: this.start,
 			next: this.start.add(this.step) as T,
 		}
+		const opts = { relativeTo: this.start }
 
 		yield item
 
 		while (item.value.compare(this.end) < 0) {
-			accumulated = accumulated.add(this.step)
-			if (accumulated.compare(this.total) > 0) {
+			accumulated = accumulated.add(this.step, opts)
+			if (accumulated.compare(this.total, opts) > 0) {
 				break
 			}
 			item.previous = item.value
 			item.value = item.value.add(this.step) as T
 
-			const nextAccumulated = accumulated.add(this.step)
-			if (nextAccumulated.compare(this.total) <= 0) {
+			const nextAccumulated = accumulated.add(this.step, opts)
+			if (nextAccumulated.compare(this.total, opts) <= 0) {
 				item.next = item.value.add(this.step) as T
 			} else {
 				delete item.next
