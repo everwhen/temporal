@@ -143,6 +143,10 @@ export class Sequence<T extends Point> implements Iterable<T> {
 		return values
 	}
 
+	filter(predicate: (item: T) => boolean): T[] {
+		return this.select(predicate, (t) => t)
+	}
+
 	with(
 		bounds: Partial<SequenceBounds<T>> & { step?: DurationLike },
 	): Sequence<T> {
