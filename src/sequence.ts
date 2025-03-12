@@ -1,5 +1,6 @@
+import { Temporal } from 'temporal-polyfill'
 import { Duration, DurationLike } from './duration.js'
-import { PlainTime } from './plain-time.js'
+import { isPlainTime } from './is.js'
 import { Point } from './point.js'
 
 export interface SequenceBounds<T extends Point> {
@@ -34,7 +35,7 @@ export class Sequence<T extends Point> implements Iterable<T> {
 
 	static from<T extends Point>(bounds: SequenceDef<T>): Sequence<T> {
 		const stepDefault: DurationLike = {}
-		if (bounds.start instanceof PlainTime) {
+		if (isPlainTime(bounds.start)) {
 			stepDefault.hours = 1
 		} else {
 			stepDefault.days = 1
@@ -45,8 +46,10 @@ export class Sequence<T extends Point> implements Iterable<T> {
 	*[Symbol.iterator](): Iterator<T> {
 		let current = this.start
 		let accumulated = Duration.from('PT0S')
-		const opts = { relativeTo: this.start }
-
+		const opts: Temporal.DurationArithmeticOptions = {}
+		if (!isPlainTime(this.start)) {
+			opts.relativeTo = this.start
+		}
 		yield current
 
 		while (current.compare(this.end) < 0) {
@@ -71,7 +74,10 @@ export class Sequence<T extends Point> implements Iterable<T> {
 			value: this.start,
 			next: this.start.add(this.step) as T,
 		}
-		const opts = { relativeTo: this.start }
+		const opts: Temporal.DurationArithmeticOptions = {}
+		if (!isPlainTime(this.start)) {
+			opts.relativeTo = this.start
+		}
 
 		yield item
 
