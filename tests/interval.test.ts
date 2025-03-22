@@ -159,15 +159,15 @@ describe('Interval', () => {
 
 		it('should return true for intervals that share an endpoint', () => {
 			const interval1 = new Interval(
-				createDateTime(2024, 1, 1),
-				createDateTime(2024, 1, 2),
+				PlainDateTime.from('2023-01-01T09:00'),
+				PlainDateTime.from('2023-01-01T10:00'),
 			)
 			const interval2 = new Interval(
-				createDateTime(2024, 1, 2),
-				createDateTime(2024, 1, 3),
+				PlainDateTime.from('2023-01-01T10:00'),
+				PlainDateTime.from('2023-01-01T11:00'),
 			)
 
-			expect(interval1.overlaps(interval2)).toBe(true)
+			expect(interval1.overlaps(interval2, { inclusive: true })).toBe(true)
 		})
 	})
 

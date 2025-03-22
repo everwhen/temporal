@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill'
 import { toLocale } from './common.js'
-import { Duration, type DurationLike } from './duration.js'
+import { Duration } from './duration.js'
 import { PlainDate } from './plain-date.js'
 import { MethodParameters } from './type-utils.js'
 

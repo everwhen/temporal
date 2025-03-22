@@ -4,8 +4,10 @@ import { PlainDate } from './plain-date.js'
 import { PlainYearMonth } from './plain-year-month.js'
 import { ComparablePoints, type Point } from './point.js'
 
-export type ComparableInterval<T extends Point, U extends Point> =
-	ComparablePoints<T, U> extends true ? U : never
+export type ComparableInterval<
+	T extends Point,
+	U extends Point,
+> = ComparablePoints<T, U> extends true ? U : never
 
 export type IntervalLike<T extends Point = Point> =
 	| {
@@ -44,8 +46,12 @@ export class Interval<T extends Point = Point> {
 	static overlaps<T extends Point>(
 		a: IntervalLike<T>,
 		b: IntervalLike<T>,
+		options?: { inclusive?: boolean },
 	): boolean {
-		return a.start.compare(b.end) <= 0 && a.end.compare(b.start) >= 0
+		if (options?.inclusive) {
+			return a.start.compare(b.end) <= 0 && a.end.compare(b.start) >= 0
+		}
+		return a.start.compare(b.end) < 0 && a.end.compare(b.start) > 0
 	}
 
 	validate(): void {
@@ -84,15 +90,23 @@ export class Interval<T extends Point = Point> {
 		return this.start.equals(other.start) && this.end.equals(other.end)
 	}
 
-	overlaps(other: IntervalLike<T>): boolean
+	overlaps(other: IntervalLike<T>, options?: { inclusive?: boolean }): boolean
 	overlaps<U extends Point>(
 		other: IntervalLike<ComparableInterval<T, U>>,
+		options?: { inclusive?: boolean },
 	): boolean
 	overlaps<U extends Point>(
 		other: IntervalLike<T> | IntervalLike<ComparableInterval<T, U>>,
+		options?: { inclusive?: boolean },
 	): boolean {
+		if (options?.inclusive) {
+			return (
+				this.start.compare(other.end) <= 0 && this.end.compare(other.start) >= 0
+			)
+		}
+
 		return (
-			this.start.compare(other.end) <= 0 && this.end.compare(other.start) >= 0
+			this.start.compare(other.end) < 0 && this.end.compare(other.start) > 0
 		)
 	}
 
