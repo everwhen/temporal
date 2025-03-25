@@ -29,7 +29,7 @@
 		"temporal-polyfill"
 	],
 	"peerDependencies": {
-		"temporal-polyfill": "^0.2.5"
+		"temporal-polyfill": ">=0.2.5 <0.4.0"
 	},
 	"peerDependenciesMeta": {
 		"temporal-polyfill": {
