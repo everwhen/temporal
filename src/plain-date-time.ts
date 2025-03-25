@@ -1,7 +1,6 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
-import { PlainDate, type PlainDateLike } from './plain-date.js'
+import { PlainDate } from './plain-date.js'
 import { PlainTime, type PlainTimeLike } from './plain-time.js'
 import { PlainYearMonth } from './plain-year-month.js'
 import { MethodParameters } from './type-utils.js'
@@ -114,18 +113,6 @@ export class PlainDateTime extends Temporal.PlainDateTime {
 
 	toPlainYearMonth(): PlainYearMonth {
 		return PlainYearMonth.from(this)
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const { locale, options } = toLocale(localesOrOptions, formatOptions)
-		return super.toLocaleString(locale, options)
-	}
-
-	withPlainDate(dateLike: PlainDateLike | string): PlainDateTime {
-		return PlainDateTime.from(super.withPlainDate(dateLike))
 	}
 
 	withPlainTime(timeLike?: PlainTimeLike | string): PlainDateTime {

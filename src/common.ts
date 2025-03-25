@@ -1,28 +1,6 @@
-import { isObject, isString } from './is.js'
-
-export function toLocale(
-	localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-	options?: Intl.DateTimeFormatOptions,
-): {
-	locale: string | string[]
-	options: Intl.DateTimeFormatOptions
-} {
-	let locale: string | string[] = new Intl.DateTimeFormat().resolvedOptions()
-		.locale
-	let opts = options
-	if (isString(localesOrOptions) || Array.isArray(localesOrOptions)) {
-		locale = localesOrOptions
-	}
-
-	if (isObject(localesOrOptions) && !Array.isArray(localesOrOptions)) {
-		opts = localesOrOptions
-	}
-	return { locale, options: resolveDateTimeOptions(opts ?? {}) }
-}
-
 type DateTimeFormatOptions = Intl.DateTimeFormatOptions
 
-const TIME_STYLE_MAPPINGS = {
+export const TIME_STYLE_MAPPINGS = {
 	short: {
 		hour: 'numeric',
 		minute: 'numeric',
@@ -50,7 +28,7 @@ const TIME_STYLE_MAPPINGS = {
 	},
 } as const
 
-const DATE_STYLE_MAPPINGS = {
+export const DATE_STYLE_MAPPINGS = {
 	short: {
 		year: '2-digit',
 		month: 'numeric',

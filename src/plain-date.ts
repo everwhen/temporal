@@ -1,5 +1,4 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
 import { PlainDateTime } from './plain-date-time.js'
 import { PlainYearMonth } from './plain-year-month.js'
@@ -22,10 +21,10 @@ export class PlainDate extends Temporal.PlainDate {
 	}
 
 	weekday(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
+		locales?: globalThis.Intl.LocalesArgument,
 		format: Intl.DateTimeFormatOptions['weekday'] = 'long',
 	): string {
-		return this.toLocaleString(localesOrOptions, { weekday: format })
+		return this.toLocaleString(locales, { weekday: format })
 	}
 
 	compare(other: PlainDateLike | string): Temporal.ComparisonResult {
@@ -87,14 +86,6 @@ export class PlainDate extends Temporal.PlainDate {
 
 	toPlainYearMonth(): PlainYearMonth {
 		return PlainYearMonth.from(this)
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const { locale, options } = toLocale(localesOrOptions, formatOptions)
-		return super.toLocaleString(locale, options)
 	}
 
 	toZonedDateTime(

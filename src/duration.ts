@@ -54,18 +54,12 @@ export class Duration extends Temporal.Duration {
 		return Duration.from(super.round(roundTo))
 	}
 
-	add(
-		other: DurationLike | string,
-		options?: Temporal.DurationArithmeticOptions,
-	): Duration {
-		return Duration.from(super.add(other, options))
+	add(other: DurationLike | string): Duration {
+		return Duration.from(super.add(other))
 	}
 
-	subtract(
-		other: DurationLike | string,
-		options?: Temporal.DurationArithmeticOptions,
-	): Duration {
-		return Duration.from(super.subtract(other, options))
+	subtract(other: DurationLike | string): Duration {
+		return Duration.from(super.subtract(other))
 	}
 
 	negated(): Duration {

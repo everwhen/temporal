@@ -1,10 +1,6 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
-import { PlainDateTime } from './plain-date-time.js'
-import type { PlainDateLike } from './plain-date.js'
 import { MethodParameters } from './type-utils.js'
-import { ZonedDateTime } from './zoned-date-time.js'
 
 export type PlainTimeLike =
 	| PlainTime
@@ -62,12 +58,6 @@ export class PlainTime extends Temporal.PlainTime {
 		return PlainTime.from(super.round(...args))
 	}
 
-	toZonedDateTime(
-		...args: MethodParameters<Temporal.PlainTime, 'toZonedDateTime'>
-	): ZonedDateTime {
-		return ZonedDateTime.from(...args)
-	}
-
 	until(...args: MethodParameters<Temporal.PlainTime, 'until'>): Duration {
 		return Duration.from(super.until(...args))
 	}
@@ -76,19 +66,7 @@ export class PlainTime extends Temporal.PlainTime {
 		return Duration.from(super.since(...args))
 	}
 
-	toPlainDateTime(temporalDate: PlainDateLike | string): PlainDateTime {
-		return PlainDateTime.from(super.toPlainDateTime(temporalDate))
-	}
-
 	with(...args: MethodParameters<Temporal.PlainTime, 'with'>): PlainTime {
 		return PlainTime.from(...args)
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const { locale, options } = toLocale(localesOrOptions, formatOptions)
-		return super.toLocaleString(locale, options)
 	}
 }

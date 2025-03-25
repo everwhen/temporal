@@ -1,10 +1,8 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
 import { PlainDateTime } from './plain-date-time.js'
 import { PlainDate } from './plain-date.js'
 import { PlainTime } from './plain-time.js'
-import { PlainYearMonth } from './plain-year-month.js'
 import { MethodParameters } from './type-utils.js'
 
 export type ZonedDateTimeLike =
@@ -99,12 +97,6 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 		return ZonedDateTime.from(super.withPlainTime(...args))
 	}
 
-	withPlainDate(
-		...args: MethodParameters<Temporal.ZonedDateTime, 'withPlainDate'>
-	): ZonedDateTime {
-		return ZonedDateTime.from(super.withPlainDate(...args))
-	}
-
 	withTimeZone(timeZone: Temporal.TimeZoneLike): ZonedDateTime {
 		return ZonedDateTime.from(super.withTimeZone(timeZone))
 	}
@@ -123,20 +115,8 @@ export class ZonedDateTime extends Temporal.ZonedDateTime {
 		return Duration.from(super.until(...args))
 	}
 
-	toPlainYearMonth(): PlainYearMonth {
-		return PlainYearMonth.from(super.toPlainYearMonth())
-	}
-
 	toPlainDate(): PlainDate {
 		return PlainDate.from(super.toPlainDate())
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const { locale, options } = toLocale(localesOrOptions, formatOptions)
-		return super.toLocaleString(locale, options)
 	}
 
 	toPlainDateTime(): PlainDateTime {

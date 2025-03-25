@@ -1,5 +1,4 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
 import { PlainDate } from './plain-date.js'
 import { MethodParameters } from './type-utils.js'
@@ -17,13 +16,8 @@ export class PlainYearMonth extends Temporal.PlainYearMonth {
 	static from(
 		...args: Parameters<typeof Temporal.PlainYearMonth.from>
 	): PlainYearMonth {
-		const month = Temporal.PlainYearMonth.from(...args).getISOFields()
-		return new PlainYearMonth(
-			month.isoYear,
-			month.isoMonth,
-			month.calendar,
-			month.isoDay,
-		)
+		const month = Temporal.PlainYearMonth.from(...args)
+		return new PlainYearMonth(month.year, month.month)
 	}
 
 	compare(other: PlainYearMonthLike | string): Temporal.ComparisonResult {
@@ -80,20 +74,6 @@ export class PlainYearMonth extends Temporal.PlainYearMonth {
 	toPlainDate(day?: { day: number }): PlainDate {
 		const opts = day ? day : { day: 1 }
 		return PlainDate.from(super.toPlainDate(opts))
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const opts = formatOptions
-			? formatOptions.calendar
-				? formatOptions
-				: { ...formatOptions, calendar: this.calendarId }
-			: { calendar: this.calendarId }
-
-		const { locale, options } = toLocale(localesOrOptions, opts)
-		return super.toLocaleString(locale, options)
 	}
 
 	with(...args: MethodParameters<Temporal.PlainYearMonth, 'with'>) {

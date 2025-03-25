@@ -1,5 +1,4 @@
 import { Temporal } from 'temporal-polyfill'
-import { toLocale } from './common.js'
 import { Duration } from './duration.js'
 import { MethodParameters } from './type-utils.js'
 import { ZonedDateTime } from './zoned-date-time.js'
@@ -48,25 +47,7 @@ export class Instant extends Temporal.Instant {
 		return Duration.from(super.until(...args))
 	}
 
-	toZonedDateTime(
-		...args: MethodParameters<Temporal.Instant, 'toZonedDateTime'>
-	): ZonedDateTime {
-		return ZonedDateTime.from(super.toZonedDateTime(...args))
-	}
-
 	toZonedDateTimeISO(tzLike: Temporal.TimeZoneLike): ZonedDateTime {
 		return ZonedDateTime.from(super.toZonedDateTimeISO(tzLike))
-	}
-
-	unix(): number {
-		return this.epochSeconds
-	}
-
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		const { locale, options } = toLocale(localesOrOptions, formatOptions)
-		return super.toLocaleString(locale, options)
 	}
 }

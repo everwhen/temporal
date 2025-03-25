@@ -147,16 +147,6 @@ export class Interval<T extends Point = Point> {
 		return `[${this.start.toString()}, ${this.end.toString()}]`
 	}
 
-	toLocaleString(
-		localesOrOptions?: string | string[] | Intl.DateTimeFormatOptions,
-		formatOptions?: Intl.DateTimeFormatOptions,
-	): string {
-		return `[${this.start.toLocaleString(
-			localesOrOptions,
-			formatOptions,
-		)}, ${this.end.toLocaleString(localesOrOptions, formatOptions)}]`
-	}
-
 	get duration(): Duration {
 		return this.start.until(this.end)
 	}
