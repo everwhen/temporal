@@ -1,0 +1,76 @@
+{
+  "name": "@everwhen/temporal",
+  "type": "module",
+  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsc --watch -p tsconfig.build.json",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepublishOnly": "pnpm build",
+    "test": "vitest --run",
+    "typecheck": "tsc",
+    "lint": "oxlint --type-aware src",
+    "release": "changeset version && changeset publish && git push --follow-tags"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./duration": "./dist/duration.js",
+    "./instant": "./dist/instant.js",
+    "./interval": "./dist/interval.js",
+    "./is": "./dist/is.js",
+    "./plain-date-time": "./dist/plain-date-time.js",
+    "./plain-date": "./dist/plain-date.js",
+    "./plain-time": "./dist/plain-time.js",
+    "./plain-year-month": "./dist/plain-year-month.js",
+    "./point": "./dist/point.js",
+    "./sequence": "./dist/sequence.js",
+    "./zoned-date-time": "./dist/zoned-date-time.js",
+    "./fn": "./dist/fn/index.js",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "temporal-polyfill": "^0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "temporal-polyfill": {
+      "optional": false
+    }
+  },
+  "dependencies": {
+    "tiny-invariant": "^1.3.3"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@types/node": "^24.7.2",
+    "oxlint": "^1.23.0",
+    "oxlint-tsgolint": "^0.2.0",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vitest": " ^3.2.4"
+  },
+  "description": "_description_",
+  "homepage": "https://github.com/everwhen/temporal#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/everwhen/temporal.git"
+  },
+  "keywords": [
+    "date",
+    "temporal",
+    "temporal-polyfill"
+  ],
+  "packageManager": "pnpm@10.18.2",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  },
+  "license": "MIT"
+}
