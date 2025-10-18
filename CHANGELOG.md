@@ -1,5 +1,11 @@
 # @everwhen/temporal
 
+## 0.5.1
+
+### Patch Changes
+
+- 523dacf: export json functions from fn
+
 ## 0.5.0
 
 ### Minor Changes
