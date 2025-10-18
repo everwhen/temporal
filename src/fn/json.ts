@@ -43,3 +43,8 @@ export function parse(
     ...revivers,
   })
 }
+
+export const json = {
+  stringify,
+  parse,
+}
