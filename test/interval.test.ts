@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Interval } from '../src/interval.ts'
+import { isPlainDate } from '../src/is.ts'
 import { PlainDate } from '../src/plain-date.ts'
 import { dateInterval, dateTimeInterval } from './test-utils.ts'
 
@@ -35,6 +36,17 @@ describe('Interval', () => {
 
       expect(copy).not.toBe(original) // Not the same reference
       expect(copy.equals(original)).toBe(true) // But equal content
+    })
+
+    it('creates a new interval instance from a serialized interval', () => {
+      const original = dateInterval('2023-01-01', '2023-01-31')
+      const serialized = original.toJSON()
+
+      const deserialized = Interval.from(serialized)
+      expect(isPlainDate(deserialized.start)).toBeTruthy()
+      expect(isPlainDate(deserialized.end)).toBeTruthy()
+      expect(original.start.toString()).toEqual(deserialized.start.toString())
+      expect(original.end.toString()).toEqual(deserialized.end.toString())
     })
   })
 
@@ -247,27 +259,25 @@ describe('Interval', () => {
   })
 
   describe('toJSON()', () => {
-    it('returns an object with start and end as strings', () => {
+    it('serializes date intervals', () => {
       const interval = dateInterval('2023-01-01', '2023-01-31')
       const json = interval.toJSON()
 
-      expect(json).toEqual({
-        start: '2023-01-01',
-        end: '2023-01-31',
-      })
+      expect(json).toMatchInlineSnapshot(
+        `"[{"start":1,"end":3},["PlainDate",2],"2023-01-01",["PlainDate",4],"2023-01-31"]"`,
+      )
     })
 
-    it('works with datetime intervals', () => {
-      const interval = dateTimeInterval(
+    it('serializes datetime intervals', () => {
+      const dateTime = dateTimeInterval(
         '2023-01-01T12:30:45',
         '2023-01-31T18:15:30',
       )
-      const json = interval.toJSON()
+      const json = dateTime.toJSON()
 
-      expect(json).toEqual({
-        start: '2023-01-01T12:30:45',
-        end: '2023-01-31T18:15:30',
-      })
+      expect(json).toMatchInlineSnapshot(
+        `"[{"start":1,"end":3},["PlainDateTime",2],"2023-01-01T12:30:45",["PlainDateTime",4],"2023-01-31T18:15:30"]"`,
+      )
     })
   })
 

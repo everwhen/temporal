@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      devalue:
+        specifier: ^5.4.1
+        version: 5.4.1
       temporal-polyfill:
         specifier: ^0.3.0
         version: 0.3.0
@@ -577,6 +580,9 @@ packages:
   detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
+
+  devalue@5.4.1:
+    resolution: {integrity: sha512-YtoaOfsqjbZQKGIMRYDWKjUmSB4VJ/RElB+bXZawQAQYAo4xu08GKTMVlsZDTF6R2MbAgjcAQRPI5eIyRAT2OQ==}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -1524,6 +1530,8 @@ snapshots:
   deep-eql@5.0.2: {}
 
   detect-indent@6.1.0: {}
+
+  devalue@5.4.1: {}
 
   dir-glob@3.0.1:
     dependencies:

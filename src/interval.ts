@@ -1,5 +1,6 @@
 import { Duration } from './duration.ts'
-import { isIntervalLike, isPoint } from './is.ts'
+import { parse, stringify } from './fn/json.ts'
+import { assertIntervalLike, isIntervalLike, isPoint } from './is.ts'
 import { type Point } from './point.ts'
 
 export interface OverlapsOptions {
@@ -22,11 +23,21 @@ export class Interval<T extends Point = Point> {
   }
 
   static from<T extends Point = Point>(
-    value: T | IntervalLike<T>,
+    value: string | T | IntervalLike<T>,
   ): Interval<T> {
-    const start = isPoint(value) ? value : value.start
-    const end = isPoint(value) ? value : value.end
-    return new Interval<T>(start, end)
+    let intervalLike: IntervalLike<T>
+    if (typeof value === 'string') {
+      const parsed = parse(value)
+      assertIntervalLike(parsed)
+      intervalLike = parsed as IntervalLike<T>
+    } else {
+      intervalLike = {
+        start: isPoint(value) ? value : value.start,
+        end: isPoint(value) ? value : value.end,
+      }
+    }
+
+    return new Interval<T>(intervalLike.start, intervalLike.end)
   }
 
   static compare<T extends Point>(
@@ -96,14 +107,11 @@ export class Interval<T extends Point = Point> {
     )
   }
 
-  toJSON(): {
-    start: string
-    end: string
-  } {
-    return {
-      start: this.start.toString(),
-      end: this.end.toString(),
-    }
+  toJSON(): string {
+    return stringify({
+      start: this.start,
+      end: this.end,
+    })
   }
 
   toString(): string {
