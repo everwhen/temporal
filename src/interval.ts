@@ -107,6 +107,12 @@ export class Interval<T extends Point = Point> {
     )
   }
 
+  merge(other: IntervalLike<T>): Interval<T> {
+    const start = this.start.compare(other.start) <= 0 ? this.start : other.start
+    const end = this.end.compare(other.end) >= 0 ? this.end : other.end
+    return new Interval<T>(start, end)
+  }
+
   toJSON(): string {
     return stringify({
       start: this.start,

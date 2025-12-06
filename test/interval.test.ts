@@ -226,6 +226,66 @@ describe('Interval', () => {
     })
   })
 
+  describe('merge()', () => {
+    it('merges overlapping intervals', () => {
+      const a = dateInterval('2023-01-01', '2023-01-15')
+      const b = dateInterval('2023-01-10', '2023-01-31')
+
+      const merged = a.merge(b)
+
+      expect(merged.start.toString()).toBe('2023-01-01')
+      expect(merged.end.toString()).toBe('2023-01-31')
+    })
+
+    it('merges non-overlapping intervals (spans the gap)', () => {
+      const a = dateInterval('2023-01-01', '2023-01-10')
+      const b = dateInterval('2023-01-20', '2023-01-31')
+
+      const merged = a.merge(b)
+
+      expect(merged.start.toString()).toBe('2023-01-01')
+      expect(merged.end.toString()).toBe('2023-01-31')
+    })
+
+    it('merges adjacent intervals', () => {
+      const a = dateInterval('2023-01-01', '2023-01-15')
+      const b = dateInterval('2023-01-15', '2023-01-31')
+
+      const merged = a.merge(b)
+
+      expect(merged.start.toString()).toBe('2023-01-01')
+      expect(merged.end.toString()).toBe('2023-01-31')
+    })
+
+    it('merges when one interval contains the other', () => {
+      const outer = dateInterval('2023-01-01', '2023-01-31')
+      const inner = dateInterval('2023-01-10', '2023-01-20')
+
+      expect(outer.merge(inner).equals(outer)).toBe(true)
+      expect(inner.merge(outer).equals(outer)).toBe(true)
+    })
+
+    it('is commutative', () => {
+      const a = dateInterval('2023-01-01', '2023-01-15')
+      const b = dateInterval('2023-01-10', '2023-01-31')
+
+      expect(a.merge(b).equals(b.merge(a))).toBe(true)
+    })
+
+    it('works with interval-like objects', () => {
+      const a = dateInterval('2023-01-01', '2023-01-15')
+      const b = {
+        start: PlainDate.from('2023-01-10'),
+        end: PlainDate.from('2023-01-31'),
+      }
+
+      const merged = a.merge(b)
+
+      expect(merged.start.toString()).toBe('2023-01-01')
+      expect(merged.end.toString()).toBe('2023-01-31')
+    })
+  })
+
   describe('contains()', () => {
     it('returns true if the interval contains a point', () => {
       const interval = dateInterval('2023-01-01', '2023-01-31')
