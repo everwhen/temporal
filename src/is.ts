@@ -1,6 +1,6 @@
 import { Temporal } from 'temporal-polyfill'
-import invariant from 'tiny-invariant'
 import { Duration } from './duration.ts'
+import { invariant } from './fn/misc.ts'
 import { Instant } from './instant.ts'
 import { Interval, type IntervalLike } from './interval.ts'
 import { PlainDateTime, type PlainDateTimeLike } from './plain-date-time.ts'

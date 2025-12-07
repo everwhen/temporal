@@ -1,4 +1,3 @@
-import invariant from 'tiny-invariant'
 import {
   Duration,
   type DateDurationLike,
@@ -6,6 +5,7 @@ import {
   type TimeDurationLike,
   type YearMonthDurationLike,
 } from './duration.ts'
+import { invariant } from './fn/misc.ts'
 import { isPlainTime, isPlainYearMonth } from './is.ts'
 import type { PlainDateTime } from './plain-date-time.ts'
 import type { PlainDate } from './plain-date.ts'
