@@ -1,5 +1,3 @@
-export { calendarGrid } from './calendar-grid.ts'
-
 export { clamp } from './clamp.ts'
 
 export { max } from './max.ts'
